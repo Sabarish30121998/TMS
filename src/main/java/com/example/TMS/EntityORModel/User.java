@@ -33,9 +33,8 @@ public class User {
     @Value("${property_name:100}")
     private  int isDeleted;*/
 
-   // @Value("${some.key:0}")
+
     private int isActive;
-    //@Value("${some.key:0}")
     private  int isDeleted;
 
     @CreationTimestamp
