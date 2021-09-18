@@ -1,26 +1,26 @@
-package com.example.TMS.Service;
+package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.DTO.LoadedDTO;
-import com.example.TMS.DTO.VehicleDTO;
 import com.example.TMS.EntityORModel.Loaded;
-import com.example.TMS.EntityORModel.User;
 import com.example.TMS.EntityORModel.Vehicle;
 import com.example.TMS.Repository.LoadedRepo;
 import com.example.TMS.Repository.VehicleRepo;
+import com.example.TMS.Service.LoadedServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class LoadedService {
+public class LoadedService implements LoadedServiceInterface {
     @Autowired
     LoadedRepo loadedRepo;
 
     @Autowired
     VehicleRepo vehicleRepo;
 
+    @Override
     public BaseResponse create(LoadedDTO loadedDTO) {
         BaseResponse baseResponse = new BaseResponse();
 
@@ -54,6 +54,7 @@ public class LoadedService {
 
     }
 
+    @Override
     public BaseResponse getbyid(long id) {
         BaseResponse baseResponse = new BaseResponse();
         Optional<Loaded> sabari = loadedRepo.findById(id);
@@ -79,6 +80,7 @@ public class LoadedService {
         return  baseResponse;
     }
 
+    @Override
     public BaseResponse deletebyid(long id) {
         BaseResponse baseResponse= new BaseResponse();
         Optional<Loaded> sabari = loadedRepo.findById(id);
@@ -95,6 +97,7 @@ public class LoadedService {
         return  baseResponse;
     }
 
+    @Override
     public BaseResponse putupdate(LoadedDTO loadedDTO, Long id) {
         BaseResponse baseResponse = new BaseResponse();
         Optional<Loaded> sabari = loadedRepo.findById(id);

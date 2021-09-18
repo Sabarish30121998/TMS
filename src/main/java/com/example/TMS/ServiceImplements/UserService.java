@@ -1,9 +1,10 @@
-package com.example.TMS.Service;
+package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.DTO.UserDTO;
 import com.example.TMS.EntityORModel.User;
 import com.example.TMS.Repository.UserRepo;
+import com.example.TMS.Service.UserServiceInterface;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@Data
-public class UserService {
+
+public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepo userRepo;
 
+    @Override
     public BaseResponse create(UserDTO userDTO) {
         BaseResponse baseResponse=new BaseResponse();
         User user = new User();
@@ -31,14 +33,14 @@ public class UserService {
 
         userRepo.save(user);
 
-
         baseResponse.setStatuscode("200");
         baseResponse.setStatusmessage("successfully value created");
         baseResponse.setData(user);
         return baseResponse;
     }
 
-    public BaseResponse<Optional> getbyid(Long id)
+    @Override
+    public BaseResponse getbyid(Long id)
     {
         BaseResponse baseResponse = new BaseResponse();
         Optional<User> sabari = userRepo.findById(id);
@@ -58,6 +60,7 @@ public class UserService {
         return baseResponse;
     }
 
+    @Override
     public BaseResponse deletebyid(Long id) {
         BaseResponse baseResponse = new BaseResponse();
         Optional<User> sabari = userRepo.findById(id);
@@ -74,6 +77,7 @@ public class UserService {
         return baseResponse;
     }
 
+    @Override
     public BaseResponse putupdate(UserDTO userDTO,Long id) {
         BaseResponse baseResponse = new BaseResponse();
         Optional<User> sabari = userRepo.findById(id);
@@ -95,7 +99,6 @@ public class UserService {
         else{
             throw  new RuntimeException("Enter A Valid UserId");
         }
-
 
         return baseResponse;
     }

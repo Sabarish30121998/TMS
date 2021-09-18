@@ -2,8 +2,7 @@ package com.example.TMS.Controller;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.DTO.LoadedDTO;
-import com.example.TMS.DTO.VehicleDTO;
-import com.example.TMS.Service.LoadedService;
+import com.example.TMS.ServiceImplements.LoadedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

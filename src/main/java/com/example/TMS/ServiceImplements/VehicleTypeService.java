@@ -1,19 +1,21 @@
-package com.example.TMS.Service;
+package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.DTO.VehicleTypeDTO;
 import com.example.TMS.EntityORModel.VehicleType;
 import com.example.TMS.Repository.VehicleTypeRepo;
+import com.example.TMS.Service.VehicleTypeServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class VehicleTypeService {
+public class VehicleTypeService implements VehicleTypeServiceInterface {
     @Autowired
     VehicleTypeRepo vehicleTypeRepo;
 
+    @Override
     public BaseResponse create(VehicleTypeDTO vehicleTypeDTO) {
         BaseResponse baseResponse= new BaseResponse();
         VehicleType vehicleType= new VehicleType();
@@ -28,7 +30,8 @@ public class VehicleTypeService {
         return baseResponse;
     }
 
-    public BaseResponse<Optional> getbyid(long id) {
+    @Override
+    public BaseResponse getbyid(long id) {
         BaseResponse baseResponse=new BaseResponse();
 
         Optional<VehicleType> sabari = vehicleTypeRepo.findById(id);
@@ -52,6 +55,7 @@ public class VehicleTypeService {
         return baseResponse;
     }
 
+    @Override
     public BaseResponse deletebyid(long id) {
         BaseResponse baseResponse = new BaseResponse();
 
@@ -70,6 +74,7 @@ public class VehicleTypeService {
         return baseResponse;
     }
 
+    @Override
     public BaseResponse putupdate(VehicleTypeDTO vehicleTypeDTO, Long id) {
         BaseResponse baseResponse= new BaseResponse();
 
