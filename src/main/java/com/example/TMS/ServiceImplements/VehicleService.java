@@ -1,6 +1,7 @@
 package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
+import com.example.TMS.BaseResponse.PaginationResponse;
 import com.example.TMS.DTO.VehicleDTO;
 import com.example.TMS.EntityORModel.User;
 import com.example.TMS.EntityORModel.Vehicle;
@@ -10,6 +11,9 @@ import com.example.TMS.Repository.VehicleRepo;
 import com.example.TMS.Repository.VehicleTypeRepo;
 import com.example.TMS.Service.VehicleServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -51,12 +55,13 @@ public class VehicleService implements VehicleServiceInterface {
             if(sabari.isPresent())
             {
                 vehicle.setUser(sabari.get());
-                vehicleRepo.save(vehicle);
+
             }
             else
             {
                 throw  new RuntimeException("Please enter a valid user id");
             }
+            vehicleRepo.save(vehicle);
         });
 
         baseResponse.setStatuscode("success");
@@ -133,5 +138,16 @@ public class VehicleService implements VehicleServiceInterface {
         }
 
         return baseResponse;
+    }
+
+    @Override
+    public PaginationResponse pagination(int currpagenumber, int totalnumberofrecordsinpage, String registrationnumber) {
+        PaginationResponse paginationResponse =new PaginationResponse();
+        Pageable paging = PageRequest.of(currpagenumber,totalnumberofrecordsinpage);
+        Page<Vehicle> sabari = vehicleRepo.searchAllByRegistrationNumberLike( "%"+registrationnumber+"%",paging);
+        paginationResponse.setResponse(sabari);
+        paginationResponse.setPagecount(sabari.getTotalPages());
+        return paginationResponse;
+
     }
 }

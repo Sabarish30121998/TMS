@@ -21,7 +21,7 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;
     private String vehicleName;
-    private Long registrationNumber;
+    private String registrationNumber;
     private int isActive;
     private  int isDeleted;
 

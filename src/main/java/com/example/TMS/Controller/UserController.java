@@ -1,6 +1,7 @@
 package com.example.TMS.Controller;
 
 import com.example.TMS.BaseResponse.BaseResponse;
+import com.example.TMS.BaseResponse.PaginationResponse;
 import com.example.TMS.DTO.UserDTO;
 import com.example.TMS.ServiceImplements.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class UserController {
    {
        return userService.putupdate(userDTO,id);
    }
+
+   @GetMapping("/pagination/{currpagenumber}/{totalnumberofrecordsinpage}/{username}")
+    public PaginationResponse pagination1(@PathVariable int currpagenumber, @PathVariable int totalnumberofrecordsinpage, @PathVariable String username)
+   {
+       return  userService.pagination(currpagenumber,totalnumberofrecordsinpage,username);
+   }
+
 
 
 

@@ -1,12 +1,16 @@
 package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
+import com.example.TMS.BaseResponse.PaginationResponse;
 import com.example.TMS.DTO.UserDTO;
 import com.example.TMS.EntityORModel.User;
 import com.example.TMS.Repository.UserRepo;
 import com.example.TMS.Service.UserServiceInterface;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -101,5 +105,17 @@ public class UserService implements UserServiceInterface {
         }
 
         return baseResponse;
+    }
+
+
+    @Override
+    public PaginationResponse pagination(int currpagenumber, int totalnumberofrecordsinpage, String username) {
+    PaginationResponse paginationResponse=new PaginationResponse();
+        Pageable paging = PageRequest.of(currpagenumber,totalnumberofrecordsinpage);
+        Page<User> users= userRepo.searchAllByUserNameLike("%" + username +"%",paging);
+        paginationResponse.setResponse(users);
+        paginationResponse.setPagecount(users.getTotalPages());
+
+    return paginationResponse;
     }
 }

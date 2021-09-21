@@ -13,7 +13,7 @@ import java.util.List;
 public class VehicleDTO {
     private Long vehicleId;
     private String vehicleName;
-    private Long registrationNumber;
+    private String registrationNumber;
     private int isActive;
     private  int isDeleted;
 
