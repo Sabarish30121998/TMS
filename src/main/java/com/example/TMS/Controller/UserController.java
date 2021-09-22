@@ -2,6 +2,7 @@ package com.example.TMS.Controller;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.BaseResponse.PaginationResponse;
+import com.example.TMS.DTO.TokenDTO;
 import com.example.TMS.DTO.UserDTO;
 import com.example.TMS.ServiceImplements.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,17 @@ public class UserController {
        return  userService.pagination(currpagenumber,totalnumberofrecordsinpage,username);
    }
 
+   @GetMapping("/login")
+    public BaseResponse token1(@RequestBody TokenDTO tokenDTO)
+   {
+       return userService.login(tokenDTO);
+   }
 
+   @GetMapping("/signin")
+    public BaseResponse signintoken(@RequestBody TokenDTO tokenDTO)
+   {
+       return  userService.signin(tokenDTO);
+   }
 
 
 }

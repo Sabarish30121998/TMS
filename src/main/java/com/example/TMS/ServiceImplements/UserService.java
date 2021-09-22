@@ -2,10 +2,12 @@ package com.example.TMS.ServiceImplements;
 
 import com.example.TMS.BaseResponse.BaseResponse;
 import com.example.TMS.BaseResponse.PaginationResponse;
+import com.example.TMS.DTO.TokenDTO;
 import com.example.TMS.DTO.UserDTO;
 import com.example.TMS.EntityORModel.User;
 import com.example.TMS.Repository.UserRepo;
 import com.example.TMS.Service.UserServiceInterface;
+import com.example.TMS.Utils.TokenGeneration;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,6 +25,11 @@ public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    TokenGeneration tokenGeneration;
+
+
 
     @Override
     public BaseResponse create(UserDTO userDTO) {
@@ -118,4 +127,59 @@ public class UserService implements UserServiceInterface {
 
     return paginationResponse;
     }
+
+    @Override
+    public BaseResponse login(TokenDTO tokenDTO) {
+        BaseResponse baseResponse = new BaseResponse();
+        Optional<User> sabari = userRepo.findByUserNameAndPassword(tokenDTO.getUserName(),tokenDTO.getPassword());
+        try
+        {
+          if(sabari.isPresent())
+          {
+              String tokens = tokenGeneration.generateToken("Admin",sabari.get().getUserName(),sabari.get().getPassword());
+              tokenDTO.setToken(tokens);
+
+              Map<String,Object> accessspecifier= new HashMap<>();
+              accessspecifier.put("accessspecifier",tokens);
+
+              baseResponse.setStatuscode("success");
+              baseResponse.setStatusmessage("Token Generated");
+              baseResponse.setData(accessspecifier);
+          }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse signin(TokenDTO tokenDTO) {
+        BaseResponse baseResponse=new BaseResponse();
+
+        Optional<User> user = userRepo.findByUserNameAndPassword(tokenDTO.getUserName(),tokenDTO.getPassword());
+        if(user.isPresent())
+        {
+            String generatedtokens = tokenGeneration.tokencreation(user.get());
+
+            // This Line is for our Understandings...But Not Necessary
+            /* //  tokenDTO.setToken(generatedtokens);  */
+
+            Map<String,Object> access= new HashMap<>();
+            access.put("accesstoken",generatedtokens);
+
+            baseResponse.setStatuscode("success");
+            baseResponse.setStatusmessage("Token Generated");
+            baseResponse.setData(access);
+
+        }
+        else
+        {
+            throw  new RuntimeException("Please Enter the Valid UserName and Password");
+        }
+        return baseResponse;
+    }
+
+
+
 }

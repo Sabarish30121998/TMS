@@ -6,8 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepo extends JpaRepository<User,Long> {
 
     Page<User> searchAllByUserNameLike(String s, Pageable paging);
+
+    Optional<User> findByUserNameAndPassword(String userName, String password);
 }
